@@ -1,120 +1,89 @@
-# Modern Seiyuu Tab - Installation Guide
+# Quick Access Tab
 
-## 📁 Files Overview
+Version: 1.2.4
 
-Your modernized new tab page now consists of three separate files:
+Developer: yszdlzn3195918
 
-1. **newtab_modern.html** - Structure and content
-2. **styles.css** - All styling and animations
-3. **script.js** - All functionality (notes, time, location)
+## Overview
 
-## 🎨 What's New
+Quick Access Tab is a lightweight, modern Google Chrome extension designed to replace the default new tab page. It provides a streamlined interface focusing on productivity and aesthetics, featuring an integrated Google search bar, customizable quick navigation links, a persistent note-taking system, and a weekly reminder tracker.
 
-### Visual Improvements
-- **Glassmorphism design** - Modern frosted glass effect throughout
-- **Animated gradients** - Dynamic purple/blue gradient background
-- **Smooth animations** - Enhanced hover effects and transitions
-- **Better typography** - Using Inter font for cleaner readability
-- **Improved spacing** - More breathing room and better visual hierarchy
+The application utilizes local storage to persist user data (notes and reminders) without requiring external database connections or account creation.
 
-### Features
-- **Enhanced quick links** - Larger profile images with overlay effects
-- **Modern notes section** - Glass-morphic container with better UX
-- **Improved search bar** - Sleek rounded design at the bottom
-- **Better time display** - More prominent and elegant
-- **Keyboard shortcuts**:
-  - `Ctrl/Cmd + K` - Focus search bar
-  - `Ctrl/Cmd + N` - Focus notes input
-  - `Enter` - Add note from input field
+## Features
 
-### Responsive Design
-- Fully responsive for mobile, tablet, and desktop
-- Optimized layouts for screens down to 320px width
+### Integrated Search: 
 
-## 🚀 Installation
+A central search bar that queries Google directly. The input field automatically focuses upon opening a new tab for immediate typing.
 
-### Option 1: Rename Files (Easiest)
-1. Rename `newtab_modern.html` to `newtab.html`
-2. Keep `styles.css` and `script.js` in the same folder
-3. Your existing `manifest.json` will work as-is
-4. Reload your Chrome extension
+### Quick Navigation: 
 
-### Option 2: Keep Both Versions
-1. Update your `manifest.json`:
-   ```json
-   {
-     "manifest_version": 3,
-     "name": "Seiyuu Quick Access Tab",
-     "version": "1.3",
-     "description": "Modern custom new tab with Google search + quick links",
-     "chrome_url_overrides": {
-       "newtab": "newtab_modern.html"
-     }
-   }
-   ```
-2. Place all files in your extension folder
-3. Reload the extension
+Pre-configured shortcuts to frequently visited websites and social media profiles.
 
-## 📂 File Structure
+### Productivity Tools:
 
-```
-your-extension-folder/
-├── newtab_modern.html (or newtab.html)
-├── styles.css
-├── script.js
-├── manifest.json
-└── img/
-    ├── carin.jpg
-    ├── yuno.jpg
-    └── yuki.jpg
-```
+ - Weekly Reminders: A dedicated panel for managing recurring weekly tasks, capable of filtering views by the current day.
 
-## 🎯 Browser Compatibility
+ - Dynamic Interface: Features a glassmorphism-inspired design with subtle animations, responsive layout, and real-time date/time display (GMT offset included).
 
-- Chrome/Edge: ✅ Full support
-- Firefox: ✅ Compatible (may need manifest v2)
-- Opera: ✅ Full support
-- Brave: ✅ Full support
+## Project Structure
 
-## 💡 Customization Tips
+The project consists of the following core files:
 
-### Change Colors
-Edit `styles.css` at the top where CSS variables are defined:
-```css
-:root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  /* Change these values for different colors */
-}
-```
+ - manifest.json: The configuration file required by Chrome to define extension permissions, versioning, and the new tab override setting.
 
-### Adjust Animation Speed
-Find transitions in `styles.css`:
-```css
---transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-/* Change 0.3s to your preferred speed */
-```
+ - newtab_modern.html: The main HTML structure defining the layout of the new tab page.
 
-### Modify Quick Links
-Edit the HTML file to add/remove links or change names.
+ - styles.css: Contains all styling rules, including animations, responsive breakpoints, and the dark-themed color palette.
 
-## 🐛 Troubleshooting
+ - script.js: Handles the application logic, including time updates, local storage management for notes/reminders, and DOM manipulation.
 
-**Images not showing?**
-- Make sure the `img/` folder is in the same directory
-- Check image filenames match exactly (case-sensitive)
+ - img/: A directory containing the image assets used for the quick link icons.
 
-**Styles not loading?**
-- Verify `styles.css` is in the same folder as the HTML file
-- Check browser console for errors (F12)
+## Installation Instructions
 
-**JavaScript not working?**
-- Ensure `script.js` is in the same folder
-- Check for console errors
+To install this extension in Google Chrome:
 
-## 📝 Notes
+ - Download the project files to a local directory. Ensure the img folder is present and contains the necessary assets.
 
-- All your existing notes will be preserved (stored in localStorage)
-- The extension still uses the same storage and permissions
-- No changes needed to manifest.json if you rename the HTML file
+ - Open Google Chrome and navigate to chrome://extensions/.
 
-Enjoy your modern new tab page! ✨
+ - Enable Developer mode using the toggle switch in the top right corner.
+
+ - Click the Load unpacked button.
+
+ - Select the directory containing the project files (manifest.json must be in the root of this directory).
+
+ - Open a new tab to verify the installation.
+
+## Personalization Guide
+
+Users may wish to modify the default "Quick Links" to reflect their own preferred websites. This requires editing the HTML source code.
+
+### Modifying Quick Links
+
+ - Open newtab_modern.html in a text editor (e.g., Notepad, VS Code, Sublime Text).
+
+ - Locate the section containing the class quick-links.
+
+ - Each link is wrapped in an anchor tag (<a ...>). To change a link, modify the following attributes:
+
+   - Link URL: Change the href attribute to the desired destination URL.
+   
+    - Image: Change the src attribute of the <img> tag to point to your new image file.
+
+   - Label: Update the text inside the <p> tag.
+
+### Adding Custom Images
+
+ - Save your desired icon images (square aspect ratio recommended) into the img/ folder.
+
+ - Reference the filename in the src attribute as shown in the example above.
+
+## Data Persistence
+
+This extension stores user data (Notes and Reminders) in the browser's localStorage. Clearing the browser's cache or local data for the extension will result in the loss of saved notes and reminders.
+
+## License
+
+This project is provided for personal use. All rights reserved by the developer.
