@@ -68,11 +68,11 @@ Users may wish to modify the default "Quick Links" to reflect their own preferre
 
  - Each link is wrapped in an anchor tag (<a ...>). To change a link, modify the following attributes:
 
-   - Link URL: Change the href attribute to the desired destination URL.
+    - Link URL: Change the href attribute to the desired destination URL.
    
     - Image: Change the src attribute of the <img> tag to point to your new image file.
 
-   - Label: Update the text inside the <p> tag.
+    - Label: Update the text inside the tag.
 
 ### Adding Custom Images
 
