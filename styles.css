@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap');
 
-/* ============================================
-   GLOBAL STYLES & RESET
-   ============================================ */
+/* globals */
 * {
   margin: 0;
   padding: 0;
@@ -47,9 +45,7 @@ body {
   z-index: -1;
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
+/* header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -100,9 +96,7 @@ body {
   font-weight: 300;
 }
 
-/* ============================================
-   MAIN CONTENT
-   ============================================ */
+/* main content */
 .main-content {
   flex: 1;
   display: flex;
@@ -136,9 +130,7 @@ body {
   text-transform: uppercase;
 }
 
-/* ============================================
-   QUICK LINKS
-   ============================================ */
+/* quick links */
 .quick-links {
   display: flex;
   gap: 2rem;
@@ -210,9 +202,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ============================================
-   SEARCH SECTION
-   ============================================ */
+/* search section */
 .search-main-section {
   width: 100%;
   max-width: 700px;
@@ -279,9 +269,7 @@ body {
   font-weight: 300;
 }
 
-/* ============================================
-   NOTES SECTION
-   ============================================ */
+/* Notes section */
 .notes-section {
   width: 100%;
   max-width: 450px;
@@ -443,9 +431,7 @@ body {
   transition: opacity 0.5s ease;
 }
 
-/* ============================================
-   REMINDERS SECTION
-   ============================================ */
+/* Reminders Section */
 .reminders-section {
   width: 100%;
   max-width: 450px;
@@ -581,9 +567,7 @@ body {
 }
 
 
-/* ============================================
-   SLIDE-IN PANEL
-   ============================================ */
+/* Slide-in panel */
 .reminder-panel {
   position: fixed !important;
   right: -400px;
@@ -693,9 +677,7 @@ body {
   transform: scale(1.2);
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
+/* Responsive design */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
