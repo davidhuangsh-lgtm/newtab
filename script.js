@@ -367,10 +367,21 @@ async function getWeather() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        fetchWeather(lat, lon);
+
+        try {
+          // Reverse geocoding
+          const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+          const geoData = await geoRes.json();
+          const city = geoData.city || geoData.locality || geoData.principalSubdivision;
+
+          fetchWeather(lat, lon, city ? `Local Weather • ${city}` : 'Local Weather');
+        } catch (e) {
+          console.error('Geocoding error', e);
+          fetchWeather(lat, lon);
+        }
       },
       (error) => {
         // Default to Tokyo if denied
