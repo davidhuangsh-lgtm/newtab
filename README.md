@@ -1,6 +1,6 @@
 # Quick Access Tab
 
-Version: 1.2.6
+Version: 1.3.0b.1
 
 Developer: yszdlzn3195918
 
@@ -130,4 +130,9 @@ Added "click-outside" functionality to close the slide-in panel.
 #### Version 1.2.6
 Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
-- Auto-detects user location (with fallback to Tokyo). 
+- Auto-detects user location (with fallback to Tokyo).
+
+#### Version 1.3.0b.1
+Improved Weather Widget:
+- Aligned weather icon and temperature for better aesthetics.
+- Added Celsius/Fahrenheit toggle button (persisted in localStorage). 

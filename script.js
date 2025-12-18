@@ -351,6 +351,17 @@ const weatherIconMap = {
   95: '⚡', 96: '⚡', 99: '⚡'
 };
 
+let currentUnit = localStorage.getItem('weather_unit') || 'C';
+let lastTempC = null; // Store last fetched temp in C
+
+function toggleUnit() {
+  currentUnit = currentUnit === 'C' ? 'F' : 'C';
+  localStorage.setItem('weather_unit', currentUnit);
+  updateWeatherDisplay();
+}
+
+document.getElementById('weather-unit').addEventListener('click', toggleUnit);
+
 async function getWeather() {
   const cityEl = document.getElementById('weather-city');
 
@@ -378,15 +389,31 @@ async function fetchWeather(lat, lon, cityName) {
 
     if (data.current_weather) {
       const { temperature, weathercode } = data.current_weather;
-      document.getElementById('weather-temp').textContent = `${Math.round(temperature)}°C`;
+      lastTempC = temperature;
       document.getElementById('weather-icon').textContent = weatherIconMap[weathercode] || '🌡️';
       document.getElementById('weather-city').textContent = cityName || 'Local Weather';
+      updateWeatherDisplay();
     }
   } catch (e) {
     console.error('Weather fetch error', e);
     document.getElementById('weather-temp').textContent = '--';
     document.getElementById('weather-city').textContent = 'Error';
   }
+}
+
+function updateWeatherDisplay() {
+  if (lastTempC === null) return;
+
+  const unitEl = document.getElementById('weather-unit');
+  const tempEl = document.getElementById('weather-temp');
+
+  let displayTemp = lastTempC;
+  if (currentUnit === 'F') {
+    displayTemp = (lastTempC * 9 / 5) + 32;
+  }
+
+  tempEl.textContent = Math.round(displayTemp);
+  unitEl.textContent = `°${currentUnit}`;
 }
 
 getWeather();
