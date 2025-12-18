@@ -1,8 +1,10 @@
 # Quick Access Tab
 
-Version: 1.2.4
+Version: 1.2.6
 
 Developer: yszdlzn3195918
+
+GitHub: [davidhuangsh-lgtm](github.com/davidhuangsh-lgtm)
 
 ## Overview
 
@@ -131,4 +133,10 @@ Changing positions of notes-reminders-container and search bar. Updated search b
 
 #### Version 1.2.5
 
-Enabling click-outside functionality to close the slide-in panel. 
+Enabling click-outside functionality to close the slide-in panel.
+
+#### Version 1.2.6
+
+Added Weather Widget with Open-Meteo API integration.
+- Displays real-time temperature and weather icon.
+- Auto-detects user location (with fallback to Tokyo). 
