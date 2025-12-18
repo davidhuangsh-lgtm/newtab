@@ -63,6 +63,7 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -145,6 +146,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -186,7 +188,7 @@ body {
   overflow: hidden;
   transition: var(--transition);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
-              0 0 0 3px rgba(255, 255, 255, 0.1);
+    0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .quick-link-image img {
@@ -210,7 +212,7 @@ body {
 .quick-link:hover .quick-link-image {
   transform: translateY(-12px) scale(1.05);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4),
-              0 0 0 6px rgba(255, 255, 255, 0.2);
+    0 0 0 6px rgba(255, 255, 255, 0.2);
 }
 
 .quick-link:hover .quick-link-overlay {
@@ -237,7 +239,8 @@ body {
 .search-main-section {
   width: 100%;
   max-width: 700px;
-  order: 1; /* Search appears first */
+  order: 1;
+  /* Search appears first */
   margin-bottom: 1rem;
 }
 
@@ -251,7 +254,8 @@ body {
   width: 100%;
   max-width: 1000px;
   flex-wrap: wrap;
-  order: 2; /* Notes and reminders appear second */
+  order: 2;
+  /* Notes and reminders appear second */
 }
 
 
@@ -419,6 +423,7 @@ body {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -430,7 +435,8 @@ body {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.tick, .trash {
+.tick,
+.trash {
   cursor: pointer;
   font-size: 1.25rem;
   transition: var(--transition);
@@ -566,7 +572,8 @@ body {
   font-weight: 300;
 }
 
-#reminder-text, #reminder-day {
+#reminder-text,
+#reminder-day {
   padding: 0.875rem 1.25rem;
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
@@ -635,7 +642,8 @@ body {
   gap: 1rem;
 }
 
-#reminder-text, #reminder-day {
+#reminder-text,
+#reminder-day {
   padding: 0.875rem 1.25rem;
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
@@ -648,7 +656,8 @@ body {
   transition: var(--transition);
 }
 
-#reminder-text:focus, #reminder-day:focus {
+#reminder-text:focus,
+#reminder-day:focus {
   border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.08);
 }

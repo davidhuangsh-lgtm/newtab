@@ -91,52 +91,43 @@ This extension stores user data (Notes and Reminders) in the browser's localStor
 This project is provided for personal use. All rights reserved by the developer.
 
 ## Update Records
-### Version 0.9 
 
-Basic search bars.
+### Version 0.9
+Basic search functionality implemented.
 
 ### Version 1.0
-
-Quick links added.
+Added Quick Links feature.
 
 #### Version 1.0.1
-
-Used Ubuntu and Noto Sans JP as font.
+Updated fonts to Ubuntu and Noto Sans JP.
 
 ### Version 1.1
-
-Added time and date.
+Added real-time Time and Date display.
 
 #### Version 1.1.1
-
-Added Notes.
+Added Notes functionality.
 
 ### Version 1.2
-
-Added Daily Reminders (Not functioning).
+Added Daily Reminders system (Initial implementation).
 
 #### Version 1.2.1
-
-Added slide-in panel.
+Added slide-in panel for reminders.
 
 #### Version 1.2.2
-
-Updates in slide-in panel. 
+Improved slide-in panel UI and interactions.
 
 #### Version 1.2.3
-
-Introducing the notes-reminders-container.
+Introduced `notes-reminders-container` layout.
 
 #### Version 1.2.4
-
-Changing positions of notes-reminders-container and search bar. Updated search bar focus. 
+Optimized layout:
+- Repositioned notes and reminders.
+- Improved search bar focus behavior.
 
 #### Version 1.2.5
-
-Enabling click-outside functionality to close the slide-in panel.
+Added "click-outside" functionality to close the slide-in panel.
 
 #### Version 1.2.6
-
 Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
 - Auto-detects user location (with fallback to Tokyo). 
