@@ -1,8 +1,10 @@
 # Quick Access Tab
 
-Version: 1.2.4
+Version: 1.2.5
 
 Developer: yszdlzn3195918
+
+GitHub: [davidhuangsh-lgtm](github.com/davidhuangsh-lgtm)
 
 ## Overview
 
