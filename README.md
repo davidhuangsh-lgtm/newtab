@@ -1,6 +1,6 @@
 # Quick Access Tab
 
-Version: 1.3.0b.1
+Version: 1.3.0b.2
 
 Developer: yszdlzn3195918
 
@@ -72,7 +72,7 @@ Users may wish to modify the default "Quick Links" to reflect their own preferre
 
    - Link URL: Change the href attribute to the desired destination URL.
    
-    - Image: Change the src attribute of the <img> tag to point to your new image file.
+    - Image: Change the src attribute of the image tag to point to your new image file.
 
    - Label: Update the text inside the paragraph tag.
 
@@ -132,7 +132,12 @@ Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
 - Auto-detects user location (with fallback to Tokyo).
 
+### Beta Program Version 1.3.0b
 #### Version 1.3.0b.1
 Improved Weather Widget:
 - Aligned weather icon and temperature for better aesthetics.
-- Added Celsius/Fahrenheit toggle button (persisted in localStorage). 
+- Added Celsius/Fahrenheit toggle button (persisted in localStorage).
+
+#### Version 1.3.0b.2
+Enhanced Location Display:
+- Now displays the actual city name alongside "Local Weather" using reverse geocoding.
