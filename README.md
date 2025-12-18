@@ -4,6 +4,8 @@ Version: 1.2.5
 
 Developer: yszdlzn3195918
 
+GitHub: [davidhuangsh-lgtm](github.com/davidhuangsh-lgtm)
+
 ## Overview
 
 Quick Access Tab is a lightweight, modern Google Chrome extension designed to replace the default new tab page. It provides a streamlined interface focusing on productivity and aesthetics, featuring an integrated Google search bar, customizable quick navigation links, a persistent note-taking system, and a weekly reminder tracker.
