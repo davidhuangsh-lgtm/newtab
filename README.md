@@ -74,7 +74,7 @@ Users may wish to modify the default "Quick Links" to reflect their own preferre
    
     - Image: Change the src attribute of the <img> tag to point to your new image file.
 
-   - Label: Update the text inside the <p> tag.
+   - Label: Update the text inside the paragraph tag.
 
 ### Adding Custom Images
 
