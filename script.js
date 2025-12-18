@@ -195,7 +195,7 @@ function renderReminders() {
 // Render ALL reminders in panel (not just pending)
 function renderAllRemindersInPanel() {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  
+
   pendingContainer.innerHTML = '<h4 style="font-size: 0.9rem; margin-bottom: 0.75rem; color: rgba(255,255,255,0.7);">All Reminders:</h4>';
 
   if (reminders.length === 0 && pendingReminders.length === 0) {
@@ -259,7 +259,7 @@ function renderAllRemindersInPanel() {
 // Toggle panel
 addBtn.onclick = (e) => {
   e.preventDefault(); // Prevent page refresh
-  
+
   if (!isPanelOpen) {
     // Open panel
     panel.classList.add('active');
@@ -285,30 +285,30 @@ addBtn.onclick = (e) => {
 
 // Close panel when clicking outside
 document.addEventListener('click', (e) => {
-    if (isPanelOpen) {
-        // Check if click is outside both panel and button
-        const clickedInsidePanel = panel.contains(e.target);
-        const clickedButton = addBtn.contains(e.target);
+  if (isPanelOpen) {
+    // Check if click is outside both panel and button
+    const clickedInsidePanel = panel.contains(e.target);
+    const clickedButton = addBtn.contains(e.target);
 
-        if (!clickedInsidePanel && !clickedButton) {
-            // Close and save if there are pending reminders
-            if (pendingReminders.length > 0) {
-                reminders = [...reminders, ...pendingReminders];
-                localStorage.setItem('reminders', JSON.stringify(reminders));
-                renderReminders(); // Refresh main page list
-            }
-            panel.classList.remove('active');
-            addBtn.classList.remove('active');
-            isPanelOpen = false;
-            pendingReminders = [];
-        }
+    if (!clickedInsidePanel && !clickedButton) {
+      // Close and save if there are pending reminders
+      if (pendingReminders.length > 0) {
+        reminders = [...reminders, ...pendingReminders];
+        localStorage.setItem('reminders', JSON.stringify(reminders));
+        renderReminders(); // Refresh main page list
+      }
+      panel.classList.remove('active');
+      addBtn.classList.remove('active');
+      isPanelOpen = false;
+      pendingReminders = [];
     }
+  }
 });
 
 // Add to pending list
 addToListBtn.onclick = (e) => {
   e.preventDefault(); // Prevent page refresh
-  
+
   const text = reminderTextInput.value.trim();
   const day = reminderDaySelect.value;
 
@@ -337,3 +337,84 @@ function deleteReminder(index) {
 
 // Initial render
 renderReminders();
+
+// ============================================
+// WEATHER WIDGET
+// ============================================
+
+const weatherIconMap = {
+  0: '☀️', 1: '🌤️', 2: '🌥️', 3: '☁️', 45: '🌫️', 48: '🌫️',
+  51: '🌧️', 53: '🌧️', 55: '🌧️', 56: '❄️', 57: '❄️',
+  61: '🌧️', 63: '🌧️', 65: '🌧️', 66: '❄️', 67: '❄️',
+  71: '❄️', 73: '❄️', 75: '❄️', 77: '❄️',
+  80: '🌧️', 81: '🌧️', 82: '🌧️', 85: '❄️', 86: '❄️',
+  95: '⚡', 96: '⚡', 99: '⚡'
+};
+
+let currentUnit = localStorage.getItem('weather_unit') || 'C';
+let lastTempC = null; // Store last fetched temp in C
+
+function toggleUnit() {
+  currentUnit = currentUnit === 'C' ? 'F' : 'C';
+  localStorage.setItem('weather_unit', currentUnit);
+  updateWeatherDisplay();
+}
+
+document.getElementById('weather-unit').addEventListener('click', toggleUnit);
+
+async function getWeather() {
+  const cityEl = document.getElementById('weather-city');
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        fetchWeather(lat, lon);
+      },
+      (error) => {
+        // Default to Tokyo if denied
+        fetchWeather(35.6895, 139.6917, 'Tokyo');
+      }
+    );
+  } else {
+    fetchWeather(35.6895, 139.6917, 'Tokyo');
+  }
+}
+
+async function fetchWeather(lat, lon, cityName) {
+  try {
+    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`);
+    const data = await response.json();
+
+    if (data.current_weather) {
+      const { temperature, weathercode } = data.current_weather;
+      lastTempC = temperature;
+      document.getElementById('weather-icon').textContent = weatherIconMap[weathercode] || '🌡️';
+      document.getElementById('weather-city').textContent = cityName || 'Local Weather';
+      updateWeatherDisplay();
+    }
+  } catch (e) {
+    console.error('Weather fetch error', e);
+    document.getElementById('weather-temp').textContent = '--';
+    document.getElementById('weather-city').textContent = 'Error';
+  }
+}
+
+function updateWeatherDisplay() {
+  if (lastTempC === null) return;
+
+  const unitEl = document.getElementById('weather-unit');
+  const tempEl = document.getElementById('weather-temp');
+
+  let displayTemp = lastTempC;
+  if (currentUnit === 'F') {
+    displayTemp = (lastTempC * 9 / 5) + 32;
+  }
+
+  tempEl.textContent = Math.round(displayTemp);
+  unitEl.textContent = `°${currentUnit}`;
+}
+
+getWeather();
+setInterval(getWeather, 30 * 60 * 1000);

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Tab</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="background-overlay"></div>
-  
+
   <header class="header">
     <div class="quick-links">
       <a href="https://x.com/Carin_Official" class="quick-link" target="_blank" rel="noopener">
@@ -55,6 +57,14 @@
       </a>
     </div>
     <div class="info-panel">
+      <div id="weather" class="weather-widget">
+        <div class="weather-main">
+          <span id="weather-icon" class="weather-icon"></span>
+          <span id="weather-temp" class="weather-temp">--</span>
+          <span id="weather-unit" class="weather-unit">°C</span>
+        </div>
+        <span id="weather-city" class="weather-city">Loading...</span>
+      </div>
       <div class="time-display">
         <span id="time" class="time"></span>
         <span id="date" class="date"></span>
@@ -117,4 +127,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
