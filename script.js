@@ -314,9 +314,15 @@ addToListBtn.onclick = (e) => {
 
   if (!text) return;
 
-  pendingReminders.push({ text, day });
-  reminderTextInput.value = '';
+  // Add directly to main list and save
+  reminders.push({ text, day });
+  localStorage.setItem('reminders', JSON.stringify(reminders));
+
+  // Refresh UI immediately
+  renderReminders();
   renderAllRemindersInPanel();
+
+  reminderTextInput.value = '';
   reminderTextInput.focus();
 };
 

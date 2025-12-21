@@ -1,6 +1,6 @@
 # Quick Access Tab
 
-**Version:** 1.3.0b.2
+**Version:** 1.3.0b.2 (1.3.0.112)
 
 **Developer:** yszdlzn3195918
 
@@ -113,12 +113,16 @@ Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
 - Auto-detects user location (with fallback to Tokyo).
 
-### Beta Program Version 1.3.0b
-#### Version 1.3.0b.1
+### Beta Program Version 1.3.0b (1.3.1100)
+#### Version 1.3.0b.1 (1.3.0.111)
 Improved Weather Widget:
 - Aligned weather icon and temperature for better aesthetics.
 - Added Celsius/Fahrenheit toggle button (persisted in localStorage).
 
-#### Version 1.3.0b.2
+#### Version 1.3.0b.2 (1.3.0.112)
 Enhanced Location Display:
 - Now displays the actual city name alongside "Local Weather" using reverse geocoding.
+
+#### Version 1.3.0b.3 (1.3.0.113)
+Improved Reminder Functionality:
+- Refresh daily reminder list immediately upon adding a new item, without closing the slide-in panel.
