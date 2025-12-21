@@ -1,6 +1,6 @@
 # Quick Access Tab
 
-**Version:** 1.3.0b.2 (1.3.0.112)
+**Version:** 1.3.0b.4 (1.3.0.114)
 
 **Developer:** yszdlzn3195918
 
