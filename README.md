@@ -126,3 +126,9 @@ Enhanced Location Display:
 #### Version 1.3.0b.3 (1.3.0.113)
 Improved Reminder Functionality:
 - Refresh daily reminder list immediately upon adding a new item, without closing the slide-in panel.
+
+#### Version 1.3.0b.4 (1.3.0.114)
+Info Panel Modes:
+- Added clickable info panel to switch between: Weather+Time, IP+Time, and Time Only.
+- Implemented smooth fade transitions when switching modes.
+- Added public IP display feature.

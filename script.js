@@ -435,3 +435,113 @@ function updateWeatherDisplay() {
 
 getWeather();
 setInterval(getWeather, 30 * 60 * 1000);
+
+// ============================================
+// INFO PANEL MODES (Weather -> IP -> Time)
+// ============================================
+
+const validModes = ['weather', 'ip', 'time'];
+let currentInfoMode = localStorage.getItem('info_mode') || 'weather';
+let cachedIP = null;
+
+// Helper to handle transition
+async function transitionInfoMode(newMode) {
+  const weatherEl = document.getElementById('weather');
+  const ipEl = document.getElementById('ip-display');
+
+  const elMap = {
+    'weather': weatherEl,
+    'ip': ipEl,
+    'time': null
+  };
+
+  const oldMode = currentInfoMode;
+  const oldEl = elMap[oldMode];
+  const newEl = elMap[newMode];
+
+  // Update state immediately
+  currentInfoMode = newMode;
+  localStorage.setItem('info_mode', newMode);
+
+  // 1. Fade out old element
+  if (oldEl) {
+    oldEl.classList.add('widget-hidden');
+    // Wait for transition
+    await new Promise(resolve => setTimeout(resolve, 300));
+    oldEl.style.display = 'none';
+    oldEl.classList.remove('widget-hidden'); // Cleanup
+  }
+
+  // 2. Fetch data if needed
+  if (newMode === 'ip' && !cachedIP) {
+    await fetchIP();
+  }
+
+  // 3. Fade in new element
+  if (newEl) {
+    newEl.style.display = 'flex';
+    newEl.classList.add('widget-hidden'); // Start hidden
+
+    // Force reflow
+    void newEl.offsetWidth;
+
+    newEl.classList.remove('widget-hidden'); // Transition to visible
+  }
+}
+
+async function fetchIP() {
+  const ipTextEl = document.getElementById('ip-address');
+
+  if (cachedIP) {
+    ipTextEl.textContent = cachedIP;
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    cachedIP = data.ip;
+    ipTextEl.textContent = cachedIP;
+  } catch (e) {
+    console.error('IP fetch error', e);
+    ipTextEl.textContent = 'Error';
+  }
+}
+
+function cycleInfoMode() {
+  const currentIndex = validModes.indexOf(currentInfoMode);
+  const nextIndex = (currentIndex + 1) % validModes.length;
+  transitionInfoMode(validModes[nextIndex]);
+}
+
+// Initial Render (No animation)
+function initialRender() {
+  const weatherEl = document.getElementById('weather');
+  const ipEl = document.getElementById('ip-display');
+
+  // Reset
+  weatherEl.style.display = 'none';
+  ipEl.style.display = 'none';
+
+  if (currentInfoMode === 'weather') {
+    weatherEl.style.display = 'flex';
+  } else if (currentInfoMode === 'ip') {
+    ipEl.style.display = 'flex';
+    fetchIP();
+  }
+}
+
+// Attach click handlers
+document.getElementById('weather').addEventListener('click', (e) => {
+  if (e.target.id !== 'weather-unit') {
+    cycleInfoMode();
+  }
+});
+
+document.getElementById('ip-display').addEventListener('click', cycleInfoMode);
+
+document.querySelector('.time-display').addEventListener('click', cycleInfoMode);
+document.querySelector('.time-display').style.cursor = 'pointer';
+
+// Start
+initialRender();
