@@ -545,3 +545,337 @@ document.querySelector('.time-display').style.cursor = 'pointer';
 
 // Start
 initialRender();
+
+// ============================================
+// EMERGENCY ALERTS PANEL
+// ============================================
+
+const emergencyPanel = document.getElementById('emergency-panel');
+const emergencyToggle = document.getElementById('emergency-toggle');
+const emergencyList = document.getElementById('emergency-list');
+const alertCountEl = document.getElementById('alert-count');
+const emergencyLocationInput = document.getElementById('emergency-location');
+const setLocationBtn = document.getElementById('set-location-btn');
+const currentLocationEl = document.getElementById('current-emergency-location');
+const updateTimeEl = document.getElementById('emergency-update-time');
+const refreshBtn = document.getElementById('emergency-refresh');
+
+let emergencyLocation = JSON.parse(localStorage.getItem('emergency_location')) || null;
+let emergencyAlerts = [];
+
+// Toggle panel
+emergencyToggle.addEventListener('click', () => {
+  emergencyPanel.classList.toggle('collapsed');
+});
+
+// Set location
+setLocationBtn.addEventListener('click', setEmergencyLocation);
+emergencyLocationInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    setEmergencyLocation();
+  }
+});
+
+async function setEmergencyLocation() {
+  const cityName = emergencyLocationInput.value.trim();
+  if (!cityName) return;
+
+  currentLocationEl.textContent = 'Searching...';
+
+  try {
+    // Geocode the city name to get coordinates
+    const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`);
+    const geoData = await geoRes.json();
+
+    if (geoData.results && geoData.results.length > 0) {
+      const location = geoData.results[0];
+      emergencyLocation = {
+        name: location.name,
+        country: location.country || '',
+        lat: location.latitude,
+        lon: location.longitude
+      };
+      localStorage.setItem('emergency_location', JSON.stringify(emergencyLocation));
+      currentLocationEl.textContent = `${emergencyLocation.name}, ${emergencyLocation.country}`;
+      emergencyLocationInput.value = '';
+      fetchEmergencyAlerts();
+    } else {
+      currentLocationEl.textContent = 'City not found';
+    }
+  } catch (e) {
+    console.error('Geocoding error:', e);
+    currentLocationEl.textContent = 'Error finding location';
+  }
+}
+
+// Use browser geolocation if no saved location
+async function initEmergencyLocation() {
+  if (emergencyLocation) {
+    currentLocationEl.textContent = `${emergencyLocation.name}, ${emergencyLocation.country}`;
+    fetchEmergencyAlerts();
+    return;
+  }
+
+  // Try to get current location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        try {
+          const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+          const geoData = await geoRes.json();
+
+          emergencyLocation = {
+            name: geoData.city || geoData.locality || 'Current Location',
+            country: geoData.countryCode || '',
+            lat: lat,
+            lon: lon
+          };
+          localStorage.setItem('emergency_location', JSON.stringify(emergencyLocation));
+          currentLocationEl.textContent = `${emergencyLocation.name}, ${emergencyLocation.country}`;
+          fetchEmergencyAlerts();
+        } catch (e) {
+          console.error('Reverse geocoding error:', e);
+          setDefaultLocation();
+        }
+      },
+      () => {
+        setDefaultLocation();
+      }
+    );
+  } else {
+    setDefaultLocation();
+  }
+}
+
+function setDefaultLocation() {
+  emergencyLocation = {
+    name: 'Tokyo',
+    country: 'JP',
+    lat: 35.6895,
+    lon: 139.6917
+  };
+  localStorage.setItem('emergency_location', JSON.stringify(emergencyLocation));
+  currentLocationEl.textContent = `${emergencyLocation.name}, ${emergencyLocation.country}`;
+  fetchEmergencyAlerts();
+}
+
+// Fetch earthquake alerts from USGS
+async function fetchEmergencyAlerts() {
+  if (!emergencyLocation) return;
+
+  showLoading();
+
+  try {
+    // USGS Earthquake API - significant earthquakes worldwide in last 24 hours
+    const response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson');
+    const data = await response.json();
+
+    if (data.features) {
+      // Map earthquakes and calculate priority based on proximity + magnitude
+      emergencyAlerts = data.features
+        .map(feature => {
+          const props = feature.properties;
+          const coords = feature.geometry.coordinates;
+          const distance = calculateDistance(
+            emergencyLocation.lat,
+            emergencyLocation.lon,
+            coords[1],
+            coords[0]
+          );
+          const magnitude = props.mag || 0;
+
+          // Calculate priority score (higher = more important)
+          const priorityScore = calculatePriorityScore(distance, magnitude);
+
+          // Get severity based on both distance and magnitude
+          const severity = getProximitySeverity(distance, magnitude);
+
+          return {
+            id: feature.id,
+            type: 'earthquake',
+            title: props.title || 'Earthquake',
+            place: props.place || 'Unknown location',
+            magnitude: magnitude,
+            time: new Date(props.time),
+            url: props.url,
+            distance: distance,
+            priorityScore: priorityScore,
+            severity: severity
+          };
+        })
+        // Sort by priority score (highest first = most important)
+        .sort((a, b) => b.priorityScore - a.priorityScore)
+        // Take top 20 relevant alerts
+        .slice(0, 20);
+
+      renderEmergencyAlerts();
+      updateAlertCount();
+      updateTimeEl.textContent = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  } catch (e) {
+    console.error('Emergency fetch error:', e);
+    emergencyList.innerHTML = `
+      <li class="emergency-no-alerts">
+        <div class="no-alert-icon">⚠️</div>
+        <p>Error loading alerts</p>
+      </li>
+    `;
+  }
+}
+
+function showLoading() {
+  emergencyList.innerHTML = '<li class="emergency-loading"></li>';
+}
+
+// Calculate distance between two coordinates in km (Haversine formula)
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Earth's radius in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+/**
+ * Calculate priority score based on distance and magnitude.
+ * Higher score = more important/urgent.
+ * 
+ * The formula prioritizes proximity heavily:
+ * - Distance < 100km: Very high base priority
+ * - Distance 100-500km: High priority
+ * - Distance 500-1000km: Medium priority  
+ * - Distance > 1000km: Low priority (even for large earthquakes)
+ * 
+ * Magnitude adds to the score within each distance tier.
+ */
+function calculatePriorityScore(distance, magnitude) {
+  let distanceScore;
+
+  if (distance < 100) {
+    distanceScore = 1000; // Extremely close - top priority
+  } else if (distance < 300) {
+    distanceScore = 800;  // Very close
+  } else if (distance < 500) {
+    distanceScore = 600;  // Close
+  } else if (distance < 1000) {
+    distanceScore = 400;  // Regional
+  } else if (distance < 2000) {
+    distanceScore = 200;  // Far
+  } else {
+    distanceScore = 50;   // Very far - low priority regardless of magnitude
+  }
+
+  // Magnitude adds up to 100 points (M10 = 100, M5 = 50, etc.)
+  const magnitudeScore = magnitude * 10;
+
+  return distanceScore + magnitudeScore;
+}
+
+/**
+ * Get severity level based on distance and magnitude combined.
+ * Nearby earthquakes always get higher severity than distant ones.
+ */
+function getProximitySeverity(distance, magnitude) {
+  // Critical: Very close (< 300km) with any significant magnitude, or close with high magnitude
+  if (distance < 100 && magnitude >= 3.0) return 'critical';
+  if (distance < 300 && magnitude >= 4.0) return 'critical';
+  if (distance < 500 && magnitude >= 5.5) return 'critical';
+
+  // Severe: Close earthquakes or regional with high magnitude
+  if (distance < 300 && magnitude >= 3.0) return 'severe';
+  if (distance < 500 && magnitude >= 4.0) return 'severe';
+  if (distance < 1000 && magnitude >= 5.5) return 'severe';
+
+  // Moderate: Regional earthquakes
+  if (distance < 500) return 'moderate';
+  if (distance < 1000 && magnitude >= 4.5) return 'moderate';
+  if (distance < 2000 && magnitude >= 6.0) return 'moderate';
+
+  // Info: Everything else (distant earthquakes)
+  return 'info';
+}
+
+function getTimeAgo(date) {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+function renderEmergencyAlerts() {
+  if (emergencyAlerts.length === 0) {
+    emergencyList.innerHTML = `
+      <li class="emergency-no-alerts">
+        <div class="no-alert-icon">✅</div>
+        <p>No significant alerts nearby</p>
+      </li>
+    `;
+    return;
+  }
+
+  emergencyList.innerHTML = emergencyAlerts.map(alert => {
+    // Format distance for display
+    const distanceText = alert.distance < 100
+      ? `${Math.round(alert.distance)} km away`
+      : alert.distance < 1000
+        ? `${Math.round(alert.distance)} km`
+        : `${(alert.distance / 1000).toFixed(1)}k km`;
+
+    return `
+    <li>
+      <a href="${alert.url}" target="_blank" rel="noopener" class="emergency-item ${alert.severity}">
+        <div class="emergency-item-header">
+          <span class="emergency-item-icon">🌍</span>
+          <span class="emergency-item-title">Earthquake</span>
+          <span class="emergency-item-magnitude">M${alert.magnitude.toFixed(1)}</span>
+        </div>
+        <div class="emergency-item-details">
+          <span class="emergency-item-location">${alert.place}</span>
+          <span class="emergency-item-time">${getTimeAgo(alert.time)}</span>
+        </div>
+        <div class="emergency-item-distance">
+          📍 ${distanceText}
+        </div>
+        <div class="emergency-item-link">
+          View details →
+        </div>
+      </a>
+    </li>
+  `;
+  }).join('');
+}
+
+function updateAlertCount() {
+  // Count high-priority alerts (critical and severe only)
+  const highPriorityAlerts = emergencyAlerts.filter(a =>
+    a.severity === 'critical' || a.severity === 'severe'
+  ).length;
+
+  alertCountEl.textContent = highPriorityAlerts;
+  alertCountEl.classList.toggle('zero', highPriorityAlerts === 0);
+}
+
+// Refresh button
+refreshBtn.addEventListener('click', () => {
+  fetchEmergencyAlerts();
+});
+
+// Initialize
+initEmergencyLocation();
+
+// Auto-refresh every 10 minutes
+setInterval(fetchEmergencyAlerts, 10 * 60 * 1000);

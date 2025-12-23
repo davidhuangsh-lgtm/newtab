@@ -11,6 +11,41 @@
 <body>
   <div class="background-overlay"></div>
 
+  <!-- Emergency Info Panel (Left Sidebar - Collapsible) -->
+  <aside id="emergency-panel" class="emergency-panel">
+    <div class="emergency-content">
+      <div class="emergency-header">
+        <h3>🚨 Emergency Alerts</h3>
+        <button id="emergency-toggle" class="emergency-fold-btn" title="Fold Panel">◀</button>
+      </div>
+
+      <div class="emergency-body">
+        <div class="location-setting">
+          <input type="text" id="emergency-location" placeholder="Enter city...">
+          <button id="set-location-btn" title="Set Location">📍</button>
+        </div>
+
+        <div class="emergency-current-location">
+          📍 <span id="current-emergency-location">Loading...</span>
+        </div>
+
+        <div class="emergency-list-container">
+          <ul id="emergency-list" class="emergency-list">
+            <!-- Alerts populated by JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="emergency-footer">
+        <span class="emergency-last-updated">Updated: <span id="emergency-update-time">--</span></span>
+        <div class="emergency-footer-actions">
+          <span class="alert-count" id="alert-count">0</span>
+          <button id="emergency-refresh" class="emergency-refresh-btn" title="Refresh">🔄</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <header class="header">
     <div class="quick-links">
       <!-- To whom that may concern:
