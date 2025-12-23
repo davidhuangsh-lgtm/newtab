@@ -11,10 +11,46 @@
 <body>
   <div class="background-overlay"></div>
 
+  <!-- Emergency Info Panel (Left Sidebar - Collapsible) -->
+  <aside id="emergency-panel" class="emergency-panel">
+    <div class="emergency-content">
+      <div class="emergency-header">
+        <h3>🚨 Emergency Alerts</h3>
+        <button id="emergency-toggle" class="emergency-fold-btn" title="Fold Panel">◀</button>
+      </div>
+
+      <div class="emergency-body">
+        <div class="location-setting">
+          <input type="text" id="emergency-location" placeholder="Enter city...">
+          <button id="set-location-btn" title="Set Location">📍</button>
+        </div>
+
+        <div class="emergency-current-location">
+          📍 <span id="current-emergency-location">Loading...</span>
+        </div>
+
+        <div class="emergency-list-container">
+          <ul id="emergency-list" class="emergency-list">
+            <!-- Alerts populated by JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="emergency-footer">
+        <span class="emergency-last-updated">Updated: <span id="emergency-update-time">--</span></span>
+        <div class="emergency-footer-actions">
+          <span class="alert-count" id="alert-count">0</span>
+          <button id="emergency-refresh" class="emergency-refresh-btn" title="Refresh">🔄</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <header class="header">
     <div class="quick-links">
       <!-- To whom that may concern:
-      Here is a template of personalized quick links.
+      Here is a template of personalized quick links. GIVEN LINK, GIVEN IMAGE PATH, GIVEN IMAGE DESCRIPTION, and GIVEN LINK NAME are places to put in your personalizied quick links. Replace them with your own values. Before the developer added features to personalize on page, you must change the values in the code to add your own quick links. Sorry for the inconvinence. 
+      =====
       <a href=GIVEN LINK class="quick-link" target="_blank" rel="noopener">
         <div class="quick-link-image">
           <img src=GIVEN IMAGE PATH alt=GIVEN IMAGE DESCRIPTION>
@@ -74,6 +110,13 @@
           <span id="weather-unit" class="weather-unit">°C</span>
         </div>
         <span id="weather-city" class="weather-city">Loading...</span>
+      </div>
+      <div id="ip-display" class="ip-widget" style="display: none;">
+        <div class="ip-main">
+          <span class="ip-icon">🌐</span>
+          <span id="ip-address" class="ip-text">Loading...</span>
+        </div>
+        <span class="ip-label">Public IP</span>
       </div>
       <div class="time-display">
         <span id="time" class="time"></span>

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Quick Access Tab",
-  "version": "1.3.0b.2",
-  "description": "Custom new tab with Google search + quick links",
+  "version": "1.3.0",
+  "description": "Custom new tab with Google search + quick links. FUCK MICROSOFT EDGE",
   "chrome_url_overrides": {
     "newtab": "newtab_modern.html"
   }

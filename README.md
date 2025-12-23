@@ -1,6 +1,6 @@
 # Quick Access Tab
 
-**Version:** 1.3.0b.2
+**Version:** 1.3.0
 
 **Developer:** yszdlzn3195918
 
@@ -113,12 +113,36 @@ Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
 - Auto-detects user location (with fallback to Tokyo).
 
-### Beta Program Version 1.3.0b
-#### Version 1.3.0b.1
+### 1.3 Beta Program Version 1.3.0b.1 through 1.3.0b.5 (1.3.0.111 through 1.3.0.115)
+#### Version 1.3.0b.1 (1.3.0.111)
 Improved Weather Widget:
 - Aligned weather icon and temperature for better aesthetics.
 - Added Celsius/Fahrenheit toggle button (persisted in localStorage).
 
-#### Version 1.3.0b.2
+#### Version 1.3.0b.2 (1.3.0.112)
 Enhanced Location Display:
 - Now displays the actual city name alongside "Local Weather" using reverse geocoding.
+
+#### Version 1.3.0b.3 (1.3.0.113)
+Improved Reminder Functionality:
+- Refresh daily reminder list immediately upon adding a new item, without closing the slide-in panel.
+
+#### Version 1.3.0b.4 (1.3.0.114)
+Info Panel Modes:
+- Added clickable info panel to switch between: Weather+Time, IP+Time, and Time Only.
+- Implemented smooth fade transitions when switching modes.
+- Added public IP display feature.
+
+#### Version 1.3.0b.5 (1.3.0.115)
+Emergency Alerts Panel:
+- Added collapsible left sidebar displaying real-time earthquake alerts from USGS API.
+- User-configurable location setting with city search and auto-detection via browser geolocation.
+- Proximity-based priority system: nearby earthquakes are prioritized over distant ones regardless of magnitude.
+- Warning level colors (critical/severe/moderate/info) based on both distance and magnitude.
+- Distance display for each alert showing kilometers from user's location.
+- Clickable alerts linking to USGS earthquake detail pages.
+- Auto-refresh every 10 minutes with manual refresh button.
+- Panel folds/unfolds with smooth animation; visible by default with fold button in header.
+
+### Version 1.3
+Fixes bugs from 1.3.0b.5. **CLOSURE OF 1.3 BETA PROGRAM**
