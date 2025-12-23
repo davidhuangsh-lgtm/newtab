@@ -113,7 +113,7 @@ Added Weather Widget with Open-Meteo API integration.
 - Displays real-time temperature and weather icon.
 - Auto-detects user location (with fallback to Tokyo).
 
-### Beta Program Version 1.3.0b.1 through 1.3.0b.4 (1.3.0.111 through 1.3.0.114)
+### 1.3 Beta Program Version 1.3.0b.1 through 1.3.0b.5 (1.3.0.111 through 1.3.0.115)
 #### Version 1.3.0b.1 (1.3.0.111)
 Improved Weather Widget:
 - Aligned weather icon and temperature for better aesthetics.
@@ -143,3 +143,6 @@ Emergency Alerts Panel:
 - Clickable alerts linking to USGS earthquake detail pages.
 - Auto-refresh every 10 minutes with manual refresh button.
 - Panel folds/unfolds with smooth animation; visible by default with fold button in header.
+
+### Version 1.3
+Fixes bugs from 1.3.0b.5. **CLOSURE OF 1.3 BETA PROGRAM**
