@@ -56,6 +56,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  /* Allow header items to wrap */
+  gap: 1rem;
+  /* Add gap for when they wrap */
   padding: 1.25rem 3rem;
   backdrop-filter: blur(12px);
   background: var(--glass-bg);
@@ -246,7 +250,10 @@ body {
 .quick-links {
   display: flex;
   gap: 2rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  /* Changed from nowrap to wrap */
+  justify-content: center;
+  /* Center items when they wrap */
 }
 
 .quick-link {
@@ -312,6 +319,32 @@ body {
 .quick-link:hover p {
   opacity: 1;
   transform: scale(1.05);
+}
+
+.quick-links:hover p {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Toggle button for mobile */
+.quick-links-toggle {
+  display: none;
+  /* Hidden by default */
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.quick-links-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* search section */
@@ -388,7 +421,7 @@ body {
   width: 100%;
   max-width: 450px;
   flex: 1;
-  min-width: 320px;
+  min-width: 280px;
 }
 
 .notes-container {
@@ -552,7 +585,7 @@ body {
   width: 100%;
   max-width: 450px;
   flex: 1;
-  min-width: 320px;
+  min-width: 280px;
 }
 
 .section-header {
@@ -1162,16 +1195,17 @@ body {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 900px),
+(max-aspect-ratio: 4/3) {
+
   .header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
+    flex-direction: row;
+    /* Keep row for button + info */
+    padding: 0.75rem 1.5rem;
+    /* Compact padding */
   }
 
-  .info-panel {
-    align-items: center;
-  }
+
 
   .time {
     font-size: 1.5rem;
@@ -1180,15 +1214,6 @@ body {
   .main-content {
     gap: 2rem;
     padding: 1.5rem;
-  }
-
-  .quick-links {
-    gap: 1.5rem;
-  }
-
-  .quick-link-image {
-    width: 60px;
-    height: 60px;
   }
 
   .notes-container {
@@ -1203,15 +1228,113 @@ body {
     font-size: 1rem;
   }
 
-  /* Emergency panel responsive */
-  .emergency-panel .emergency-content {
-    width: 280px;
-    max-height: 60vh;
+  .quick-links {
+    gap: 1.5rem;
+  }
+
+  .quick-link-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Mobile Navigation */
+  .quick-links-toggle {
+    display: flex;
+    /* Show on mobile */
+  }
+
+  .quick-links {
+    display: none;
+    /* Hide by default on mobile */
+    position: absolute;
+    top: 70px;
+    left: 1rem;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    width: 200px;
+    animation: menuSlideDown 0.3s ease-out;
+  }
+
+  .quick-links.mobile-open {
+    display: flex;
+  }
+
+  .quick-link p {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+@keyframes menuSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Styles & Full Screen Panels */
+@media (max-width: 900px),
+(max-aspect-ratio: 4/3) {
+  .notes-container {
+    padding: 1.25rem;
+  }
+
+  .search-wrapper {
+    padding: 0.625rem 1.25rem;
+  }
+
+  .search-wrapper input {
+    font-size: 1rem;
   }
 
   .emergency-toggle {
     width: 40px;
     height: 40px;
+  }
+
+  /* Full Screen Emergency Panel */
+  .emergency-panel:not(.collapsed) .emergency-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    border: none;
+    z-index: 2000;
+    margin: 0;
+    transform: none;
+  }
+
+  .emergency-panel:not(.collapsed) {
+    top: 0;
+    transform: none;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    /* Ensure top alignment */
+  }
+
+  /* Full Screen Reminder Panel */
+  .reminder-panel.active {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-left: none;
+    right: 0 !important;
   }
 }
 

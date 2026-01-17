@@ -514,6 +514,26 @@ function cycleInfoMode() {
   transitionInfoMode(validModes[nextIndex]);
 }
 
+// Quick Links Toggle for Mobile
+const quickLinksToggle = document.getElementById('quick-links-toggle');
+const quickLinksContainer = document.getElementById('quick-links-container');
+
+if (quickLinksToggle && quickLinksContainer) {
+  quickLinksToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    quickLinksContainer.classList.toggle('mobile-open');
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (quickLinksContainer.classList.contains('mobile-open') &&
+      !quickLinksContainer.contains(e.target) &&
+      e.target !== quickLinksToggle) {
+      quickLinksContainer.classList.remove('mobile-open');
+    }
+  });
+}
+
 // Initial Render (No animation)
 function initialRender() {
   const weatherEl = document.getElementById('weather');
@@ -529,6 +549,11 @@ function initialRender() {
     ipEl.style.display = 'flex';
     fetchIP();
   }
+
+  // Auto-collapse emergency panel on small screens or portrait/square aspect ratio
+  if (window.innerWidth < 900 || (window.innerWidth / window.innerHeight) < 1.333) {
+    emergencyPanel.classList.add('collapsed');
+  }
 }
 
 // Attach click handlers
@@ -543,8 +568,7 @@ document.getElementById('ip-display').addEventListener('click', cycleInfoMode);
 document.querySelector('.time-display').addEventListener('click', cycleInfoMode);
 document.querySelector('.time-display').style.cursor = 'pointer';
 
-// Start
-initialRender();
+
 
 // ============================================
 // EMERGENCY ALERTS PANEL
@@ -879,3 +903,6 @@ initEmergencyLocation();
 
 // Auto-refresh every 10 minutes
 setInterval(fetchEmergencyAlerts, 10 * 60 * 1000);
+
+// Start
+initialRender();
